@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFT DISPLAY</title>
+</head>
+
+<body style=" background-color:beige;">
+    <div style="text-align: center;">
+        <h1>NFT name</h1>
+        <img src="" alt="NFT image">
+    </div>
+
+    <script type="module">
+        import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js";
+
+        (
+            async () => {
+                //connect to the network.. using Alchemy's public 'demo' api key.
+                const provider = await new ethers.AlchemyProvider('mainnet', 'demo');
+                console.log(await provider.getNetwork());
+
+                //connect to the NFT contract
+                const ABI = '[{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]';
+                const contract = await new ethers.Contract("0x3BFb2F2B61Be8f2f147F5F53a906aF00C263D9b3", ABI, provider);
+
+                //the full IPFS link "ipfs://{Content-IDentifier}"
+                //most browsers don't support ipfs so we need to use "https://ipfs.io/ipfs/{CID}"
+                const URI = await contract.tokenURI(1854);
+
+                //replace the ipfs:// with https://ipfs.io/ipfs/
+                const URL = URI.replace('ipfs://', 'https://ipfs.io/ipfs/');
+                console.log('token URI: ', URI);
+
+                //get the metadata.. image, name etc
+                const request = await fetch(URL);
+                const nftData = await request.json();
+                console.log(nftData);
+
+
+                //get NFT name
+                function getName() {
+                    return nftData.name;
+                }
+                document.querySelector('h1').textContent = getName();
+
+                //get NFT image
+                function getImage() {
+                    return nftData.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
+                }
+                document.querySelector('img').src = getImage();
+                document.querySelector('img').style = "width: 600px; border-radius: 8%;";
+
+            })();
+    </script>
+</body>
+
+</html>
