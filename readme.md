@@ -6,6 +6,8 @@ No react, no server side stuff. This should serve as a quick reminder or a tutor
 Can you get the page to show another NFT? Display some attributes perhaps?
 This is a nice starting point. :3
 
+https://michieladriaansens.github.io/display-a-NFT/
+
 # Summary
 The page connects to a node wich allows interaction with a blockchain and NFT smartcontract.
 From the smartcontract a link (URI) gets retrieved where the NFT's metadata (image/attributes/name etc) is stored.
